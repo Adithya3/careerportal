@@ -1,0 +1,214 @@
+<div ng-controller="jobDetailCtrl">
+
+    <div class="col-md-6 col-xs-6">
+
+        <div class="panel panel-info" set-height>
+
+            <div class="panel-heading">
+                <div class="panel-title">
+                    <h5>&nbsp;&nbsp;&nbsp;&nbsp;Job Post Detail</h5>
+                </div>
+            </div>
+
+            <div class="panel-body" style="background: #FDFDFD">
+
+                <form class="form-horizontal" ng-submit="update()"
+                      style="background: white; margin-top: 20px; margin-bottom: 20px; padding: 20px">
+
+                    <div class="form-group">
+                        <label class="col-md-4 col-xs-6 control-label" for="title">Title</label>
+                        <div class="col-md-4 col-xs-6">
+                            <input id="title" name="title"
+                                   class="form-control input-md" type="text" ng-model="data.title"
+                                   ng-disabled="disabled" required>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-md-4 col-xs-6 control-label" for="description">Description</label>
+                        <div class="col-md-4 col-xs-6">
+                            <input id="description" name="description" class="form-control input-md"
+                                   type="text" ng-model="data.description" ng-disabled="disabled">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-md-4 col-xs-6 control-label" for="responsibilities">Responsibilities</label>
+                        <div class="col-md-4 col-xs-6">
+                            <input id="responsibilities" name="responsibilities" class="form-control input-md"
+                                   type="text" ng-model="data.responsibilities" ng-disabled="disabled"
+                            >
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-md-4 col-xs-6 control-label" for="officeLocation">Office Location</label>
+                        <div class="col-md-4 col-xs-6">
+					<textarea class="form-control" id="officeLocation" name="officeLocation"
+                              ng-model="data.officeLocation" ng-disabled="disabled" required></textarea>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-md-4 col-xs-6 control-label" for="salary">Salary
+                        </label>
+                        <div class="col-md-4 col-xs-6">
+                            <div class="input-group">
+                                <span class="input-group-addon">$</span> <input id="salary"
+                                                                                name="salary" class="form-control"
+                                                                                required
+                                                                                type="text"
+                                                                                min=0 ng-model="data.salary"
+                                                                                ng-disabled="disabled">
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <div class="form-group">
+                        <label class="col-md-4 col-xs-6 control-label" for="responsibilities">Status</label>
+                        <div class="col-md-8 col-xs-6" style="margin-top: 5px">
+                            <div class="col-md-3 col-xs-3">
+                                <label>
+                                    <input type="radio" ng-model="data.status" value="1" ng-disabled="disabled">
+                                    Open
+                                </label><br/>
+                            </div>
+                            <div class="col-md-3 col-xs-3">
+                                <label>
+                                    <input type="radio" ng-model="data.status" value="2" ng-disabled="disabled">
+                                    Filled
+                                </label><br/>
+                            </div>
+                            <div class="col-md-4 col-xs-4">
+                                <label>
+                                    <input type="radio" ng-model="data.status" value="0" ng-disabled="disabled">
+                                    Cancelled
+                                </label><br/>
+                            </div>
+                        </div>
+
+                    </div>
+
+
+                    <div class="form-group" style="margin-top: 10px">
+                        <div class="col-md-2 col-xs-2"></div>
+                        <div class="col-md-4 col-xs-6 text-right">
+                            <button style="margin-right: 10px" type="button"
+                                    class="btn btn-primary" ng-click="edit()">
+                                <span class="glyphicon glyphicon-pencil" aria-hidden="true">&nbsp;</span>Edit
+                            </button>
+                        </div>
+                        <div class="col-md-4 col-xs-6 text-left">
+                            <button style="margin-left: -10px" type="submit"
+                                    class="btn btn-primary" ng-disabled="disabled">
+                                <span class="glyphicon glyphicon-floppy-save" aria-hidden="true">&nbsp;</span>Update
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="alert alert-success text-center" role="alert"
+                         ng-hide="successMsg">Well done! Job Position updated sucessfully.
+                    </div>
+
+                    <div class="alert alert-danger text-center" role="alert"
+                         ng-hide="failureMsg">Oh snap ! Internal Server Error. Please retry.
+                    </div>
+
+                    <div class="alert alert-warning text-center" role="alert"
+                         ng-hide="warning400">Sorry ! If an application is in OfferAccepted state, the company cannot
+                        cancel this position.
+                    </div>
+
+                    <div class="alert alert-warning text-center" role="alert"
+                         ng-hide="warning403">Sorry ! A position can't be marked as Filled if it does not have an offer
+                        accepted.
+                    </div>
+
+                </form>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <div class="col-md-6 col-xs-6" set-height style="overflow-y:auto;">
+
+        <div class="panel panel-info">
+
+            <div class="panel-heading">
+                <div class="panel-title">
+                    <h5>&nbsp;&nbsp;&nbsp;&nbsp; Applications Received</h5>
+                </div>
+            </div>
+
+            <div class="panel-body" style="background: #FDFDFD">
+
+                <div class="alert alert-info text-center" role="alert"
+                     ng-hide=noApplications
+                     style="margin-top: 10px; margin-left: 10px; margin-right: 10px">Sorry!
+                    No applications received yet.
+                </div>
+
+                <div class="row" ng-repeat="application in data.applications"
+                     style="border: 2px solid #CDE7F5; margin: 3px; padding-bottom: 5px">
+
+                    <div class="row" style="margin: 2px">
+
+                        <div class="col-xs-7 col-md-7">
+                            <h5>
+                                Name: <strong>{{application.jobSeeker.firstName}}&nbsp;
+                                {{application.jonSeeker.lastName}}</strong>
+                            </h5>
+                            <h5>
+                                Education: <strong>{{application.jobSeeker.education}}</strong>
+                            </h5>
+                            <h4>
+                                <small>Email: <strong><em>{{application.jobSeeker.email}}</em></strong></small>
+                            </h4>
+                        </div>
+                        <div class="col-xs-5 col-md-5">
+                            <h5>
+                                Skills: <strong>{{application.jobSeeker.skills}}</strong>
+                            </h5>
+                            <h5>
+                                Work Experience: <strong>{{application.jobSeeker.workExperience}}</strong>
+                            </h5>
+                            <a type="button" class="btn btn-primary"
+                               href="{{application.resumeKey}}">
+                                View Resume &nbsp; <span class="glyphicon glyphicon-chevron-right"/>
+                            </a>
+                        </div>
+
+                    </div>
+
+                    <hr>
+
+                    <div class="row">
+
+                        <div class="col-xs-6 col-md-6 text-center">
+                            <button type="button" class="btn btn-success" ng-click="accept(application)"
+                            >
+                                Accept &nbsp; <span class="glyphicon glyphicon-ok"/>
+                            </button>
+                        </div>
+                        <div class="col-xs-6 col-md-6 text-center">
+
+                            <button type="button" class="btn btn-danger" ng-click="decline(application)"
+                            >
+                                Decline &nbsp; <span class="glyphicon glyphicon-remove"/>
+                            </button>
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
